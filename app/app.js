@@ -10,8 +10,9 @@
 		  	// base url
 		  	var baseUrl = "https://app.metorik.com";
 
-		  	// email to request for
+		  	// email to request for (and urlencode)
 		  	var email = page_type == 'ticket' ? domHelper.ticket.getContactInfo().user.email : domHelper.contact.getContactInfo().user.email;
+		  	email = encodeURIComponent(email);
 
 		  	// get data
 		  	this.$request.get(baseUrl + "/api/store/external/freshdesk?token={{iparam.api_token}}&email=" + email)
