@@ -48,7 +48,9 @@
 					  		jQuery($container).find('.customer-name').text(body.customer.fullName);
 					  		jQuery($container).find('.customer-image').attr('src', body.customer.avatar);
 					  		jQuery($container).find('.customer-join-date').text(joinDate);
-					  		jQuery($container).find('.customer-location').show().text(body.customer.location);
+					  		if (body.customer.location && body.customer.location != ', ') {
+						  		jQuery($container).find('.customer-location').show().text(body.customer.location);
+						  	}
 					  		jQuery($container).find('.customer-phone').show().attr('href', 'tel:' + phone).text(phone);
 					  	
 					  		// customer stats
@@ -66,7 +68,7 @@
 					  			var orderDate = new Date(order.order_created_at).toDateString();
 
 					  			customerOrdersHtml = customerOrdersHtml + '<div class="order">' +
-				      				'<a href="https://app.metorik.com/order/' + order.order_id + '" class="order-link">' +
+				      				'<a href="https://app.metorik.com/order/' + order.order_id + '" class="order-link" target="_blank">' +
 					      				'<div class="order-details clearfix">' +
 						      				'<div class="details">' +
 						      					'<div class="total">' +
@@ -148,16 +150,13 @@
 					  	}
 					}
 				})
-				.fail(function(err) {
+				.fail(function() {
 					// stop loading
 					jQuery($container).find('.loading').hide();
 
-					// handle data
-					var body = JSON.parse(JSON.parse(err.message).response);
-
 					// handle failure
 					jQuery($container).find('.error').show();
-					jQuery($container).find('.error .reason').text(body.reason);
+					jQuery($container).find('.error .reason').text('Please ensure you have provided a valid API token.');
 				});
 		},
 
