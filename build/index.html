@@ -1,0 +1,683 @@
+<style>
+#{{app_id}} #metorik-app {
+  padding-top: 10px; }
+  #{{app_id}} #metorik-app > h3 {
+    width: 100%; }
+  #{{app_id}} #metorik-app .logo {
+    background: url("{{'logo.png' | asset_url}}");
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: center;
+    display: inline-block;
+    float: right;
+    height: 25px;
+    margin-top: -3px;
+    padding-right: 38px;
+    width: 25px;
+    vertical-align: middle; }
+  #{{app_id}} #metorik-app .app-box {
+    border: 1px solid #d3e0e9;
+    border-radius: 3px;
+    color: #68768c;
+    line-height: 1.5;
+    padding: 20px 15px; }
+  #{{app_id}} #metorik-app .customer-details {
+    display: none; }
+    #{{app_id}} #metorik-app .customer-details .customer {
+      padding-bottom: 20px; }
+      #{{app_id}} #metorik-app .customer-details .customer .details {
+        float: left; }
+        #{{app_id}} #metorik-app .customer-details .customer .details .customer-name {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 8px; }
+        #{{app_id}} #metorik-app .customer-details .customer .details ul li {
+          font-size: 13px;
+          padding-bottom: 4px; }
+          #{{app_id}} #metorik-app .customer-details .customer .details ul li.customer-location {
+            display: none; }
+          #{{app_id}} #metorik-app .customer-details .customer .details ul li .customer-phone {
+            display: none; }
+      #{{app_id}} #metorik-app .customer-details .customer .image {
+        float: right; }
+        #{{app_id}} #metorik-app .customer-details .customer .image .customer-image {
+          border: 2px solid #d3e0e9;
+          border-radius: 100%;
+          -webkit-transition: all 200ms;
+          transition: all 200ms; }
+      #{{app_id}} #metorik-app .customer-details .customer .customer-url {
+        display: none; }
+        #{{app_id}} #metorik-app .customer-details .customer .customer-url:hover img {
+          border-color: #bcd0de; }
+    #{{app_id}} #metorik-app .customer-details .customer-stats {
+      color: #7f8fa4;
+      display: none; }
+      #{{app_id}} #metorik-app .customer-details .customer-stats .stat {
+        border: 1px solid #d3e0e9;
+        border-radius: 2px;
+        color: #7f8fa4;
+        font-size: 12px;
+        margin-bottom: 5px;
+        padding: 8px 12px;
+        text-transform: uppercase; }
+        #{{app_id}} #metorik-app .customer-details .customer-stats .stat .amount {
+          color: #68768c;
+          display: inline-block;
+          font-size: 18px;
+          font-weight: 500;
+          padding-right: 3px;
+          vertical-align: middle; }
+        #{{app_id}} #metorik-app .customer-details .customer-stats .stat .words {
+          display: inline-block;
+          padding-top: 1px;
+          vertical-align: middle; }
+    #{{app_id}} #metorik-app .customer-details .guest-orders {
+      display: none; }
+      #{{app_id}} #metorik-app .customer-details .guest-orders .order a.order-link {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-bottom: 0; }
+      #{{app_id}} #metorik-app .customer-details .guest-orders .order .order-items {
+        border: 1px solid #d3e0e9;
+        border-top: 0;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        display: none;
+        width: 100%; }
+        #{{app_id}} #metorik-app .customer-details .guest-orders .order .order-items ul {
+          list-style-type: none;
+          margin: 0; }
+          #{{app_id}} #metorik-app .customer-details .guest-orders .order .order-items ul li {
+            background: #fafafa;
+            border-bottom: 1px solid #d3e0e9;
+            font-size: 13px;
+            padding: 8px 12px; }
+            #{{app_id}} #metorik-app .customer-details .guest-orders .order .order-items ul li:last-of-type {
+              border-bottom: 0; }
+    #{{app_id}} #metorik-app .customer-details .customer-orders {
+      display: none; }
+    #{{app_id}} #metorik-app .customer-details .customer-products {
+      display: none; }
+      #{{app_id}} #metorik-app .customer-details .customer-products ul {
+        list-style-type: none;
+        margin-left: 0; }
+        #{{app_id}} #metorik-app .customer-details .customer-products ul .product {
+          border: 1px solid #d3e0e9;
+          color: #7f8fa4;
+          margin-bottom: 4px;
+          padding: 12px; }
+          #{{app_id}} #metorik-app .customer-details .customer-products ul .product span {
+            font-weight: 600; }
+    #{{app_id}} #metorik-app .customer-details .order a.order-link {
+      border: 1px solid #d3e0e9;
+      border-radius: 2px;
+      color: #68768c;
+      display: block;
+      margin-bottom: 6px;
+      text-decoration: none;
+      width: 100%;
+      -webkit-transition: all 200ms;
+      transition: all 200ms; }
+      #{{app_id}} #metorik-app .customer-details .order a.order-link:hover {
+        border-color: #a5c0d3; }
+      #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .details {
+        float: left;
+        padding: 12px; }
+        #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .details .total {
+          color: #7f8fa4;
+          font-size: 15px;
+          margin-bottom: 2px; }
+          #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .details .total span {
+            font-weight: bold; }
+        #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .details .meta {
+          color: #97a1b2;
+          font-size: 13px; }
+      #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .status-wrapper {
+        float: right;
+        max-width: 80px;
+        padding: 17px 12px 0 0; }
+        #{{app_id}} #metorik-app .customer-details .order a.order-link .order-details .status-wrapper .status {
+          border: 1px solid #d3e0e9;
+          border-radius: 2px;
+          font-size: 11px;
+          padding: 4px 6px;
+          text-transform: uppercase; }
+    #{{app_id}} #metorik-app .customer-details .guest-data {
+      display: none; }
+    #{{app_id}} #metorik-app .customer-details .guest-notice {
+      font-size: 12px;
+      text-transform: uppercase; }
+    #{{app_id}} #metorik-app .customer-details h4 {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 14px; }
+    #{{app_id}} #metorik-app .customer-details.contact-page .customer .image {
+      display: none; }
+    #{{app_id}} #metorik-app .customer-details.contact-page .customer-stats .words {
+      display: block; }
+    #{{app_id}} #metorik-app .customer-details.contact-page .order a.order-link .order-details .details {
+      float: none; }
+    #{{app_id}} #metorik-app .customer-details.contact-page .order a.order-link .order-details .status-wrapper {
+      float: none;
+      max-width: 100%;
+      padding: 0; }
+      #{{app_id}} #metorik-app .customer-details.contact-page .order a.order-link .order-details .status-wrapper .status {
+        border: 0;
+        border-top: 1px solid #d3e0e9;
+        padding: 4px 11px; }
+  #{{app_id}} #metorik-app .error {
+    display: none; }
+    #{{app_id}} #metorik-app .error .reason {
+      font-weight: 600; }
+  #{{app_id}} #metorik-app .loading {
+    display: block;
+    margin: 20px auto;
+    position: relative;
+    width: 6px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    -webkit-animation: pulse 750ms infinite;
+    animation: pulse 750ms infinite;
+    -webkit-animation-delay: 250ms;
+    animation-delay: 250ms; }
+  #{{app_id}} #metorik-app .loading:before, #{{app_id}} #metorik-app .loading:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 16px;
+    width: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-animation: pulse 750ms infinite;
+    animation: pulse 750ms infinite; }
+  #{{app_id}} #metorik-app .loading:before {
+    left: -12px; }
+  #{{app_id}} #metorik-app .loading:after {
+    left: 12px;
+    -webkit-animation-delay: 500ms;
+    animation-delay: 500ms; }
+
+@-webkit-keyframes pulse {
+  50% {
+    background: #7f8fa4; } }
+
+@keyframes pulse {
+  50% {
+    background: #7f8fa4; } }
+
+</style>
+<div id="{{app_id}}">
+<div id="metorik-app" class="widget">
+  <h3>Metorik <div class="logo"></div></h3>
+  <div class="content">
+    
+    <div class="app-box">
+		<div class="loading"></div>
+
+      	<div class="error">There was an error getting this customer's data from Metorik. <span class="reason"></span></div>
+      	<div class="customer-details">
+      		<div class="customer clearfix">
+      			<div class="details">
+	      			<a href="#" class="customer-url" target="_blank">
+		      			<h4 class="customer-name">
+		      				~
+		  				</h4>
+	  				</a>
+	  				<div class="guest-data">
+		      			<h4 class="customer-name">
+		      				~
+		  				</h4>
+	  				</div>
+	      			<ul>
+	      				<li class="customer-join-date">~</li>
+	      				<li class="customer-location">~</li>
+	      				<li><a href="#" class="customer-phone">~</a></li>
+	  				</ul>
+  				</div>
+  				<div class="image">
+  					<a href="#" class="customer-url" target="_blank">
+  						<img class="customer-image" src="" width="80" />
+					</a>
+  					<div class="guest-data">
+  						<img class="customer-image" src="" width="80" />
+					</div>
+  				</div>
+      		</div>
+
+      		<div class="customer-stats">
+      			<div class="row-fluid">
+      				<div class="span6">
+      					<div class="stat orders">
+      						<div class="amount">~</div> <div class="words">Orders</div>
+  						</div>
+      				</div>
+      				<div class="span6">
+      					<div class="stat items">
+      						<div class="amount">~</div> <div class="words">Items</div>
+  						</div>
+      				</div>
+      			</div>
+      			<div class="row-fluid">
+      				<div class="span6">
+      					<div class="stat aov">
+      						<div class="amount">~</div> <div class="words">AVG Order</div>
+  						</div>
+      				</div>
+      				<div class="span6">
+      					<div class="stat ltv">
+      						<div class="amount">~</div> <div class="words">LTV</div>
+  						</div>
+      				</div>
+      			</div>
+      		</div>
+
+      		<hr />
+
+      		<div class="guest-orders">
+      			<p class="guest-notice">This user is a guest with a single order:</p>
+      			<div class="order">
+      				<a href="#" class="order-link" target="_blank">
+	      				<div class="order-details clearfix">
+		      				<div class="details">
+		      					<div class="total">
+		      						<span class="amount">~</span> for <span class="items">~</span>
+	      						</div>
+		      					<div class="meta">
+		      						<span class="order-number">~</span> - <span class="order-date">~</span>
+	      						</div>
+		      				</div>
+		      				<div class="status-wrapper">
+		      					<div class="status">~</div>
+		      				</div>
+	      				</div>
+      				</a>
+      				<div class="order-items">
+      					<ul></ul>
+      				</div>
+      			</div>
+      		</div>
+
+	      	<div class="customer-orders">
+	      		<h4>Orders:</h4>
+
+	      		<!-- orders go here -->
+		      	<div class="orders"></div>
+
+		      	<hr />
+	      	</div>
+
+	      	<div class="customer-products">
+	      		<h4>Owns Products:</h4>
+
+	      		<!-- products go here -->
+	      		<ul class="products"></ul>
+	      	</div>
+      	</div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+<script>
+var {{app_id}} = (function() {
+  "use strict";
+  	return {
+		initialize: function() {
+			var self = this;
+
+			// container
+			var $container = this.$container;
+
+		  	// base url
+		  	var baseUrl = "https://app.metorik.com";
+
+		  	// email to request for (and urlencode)
+		  	var email = page_type == 'ticket' ? domHelper.ticket.getContactInfo().user.email : domHelper.contact.getContactInfo().user.email;
+		  	email = encodeURIComponent(email);
+
+		  	// get data
+		  	this.$request.get(baseUrl + "/api/store/external/freshdesk?token={{iparam.api_token}}&email=" + email)
+				.done(function(data) {
+					// stop loading
+					jQuery($container).find('.loading').hide();
+
+					// handle data
+					var body = JSON.parse(data.response);
+
+					// check for errors
+					if (! body.success) {
+						jQuery($container).find('.error').show();
+						jQuery($container).find('.error .reason').text(body.reason);
+					} else {
+					  	// customer or guest
+					  	jQuery($container).find('.customer-details').show();
+
+					  	// customer
+					  	if (body.customer) {
+					  		// vars
+					  		var joinDate = new Date(body.customer.customer_created_at).toDateString();
+					  		var phone = body.customer.billing_address_phone;
+
+					  		// show
+					  		jQuery($container).find('.customer-url').show();
+					  		jQuery($container).find('.customer-stats').show();
+					  		jQuery($container).find('.customer-orders').show();
+					  		jQuery($container).find('.customer-products').show();
+
+					  		// customer details
+					  		jQuery($container).find('.customer-url').attr('href', 'https://app.metorik.com/customer/' + body.customer.customer_id);
+					  		jQuery($container).find('.customer-name').text(body.customer.fullName);
+					  		jQuery($container).find('.customer-image').attr('src', body.customer.avatar);
+					  		jQuery($container).find('.customer-join-date').text(joinDate);
+					  		if (body.customer.location && body.customer.location != ', ') {
+						  		jQuery($container).find('.customer-location').show().text(body.customer.location);
+						  	}
+					  		jQuery($container).find('.customer-phone').show().attr('href', 'tel:' + phone).text(phone);
+					  	
+					  		// customer stats
+					  		jQuery($container).find('.customer-stats .orders .amount').text(body.totals.orders_count);
+					  		jQuery($container).find('.customer-stats .orders .words').text(body.totals.orders_count == 1 ? 'Order' : 'Orders');
+					  		jQuery($container).find('.customer-stats .items .amount').text(body.totals.items_count);
+					  		jQuery($container).find('.customer-stats .items .words').text(body.totals.items_count == 1 ? 'Item' : 'Items');
+					  		jQuery($container).find('.customer-stats .aov .amount').text(self.moneyFormat(body.totals.average_order, body.store.currency, 0));
+					  		jQuery($container).find('.customer-stats .ltv .amount').text(self.moneyFormat(body.totals.total, body.store.currency, 0));
+					  	
+					  		// customer orders
+					  		var customerOrdersHtml = '';
+					  		body.orders.forEach(function(order) {
+					  			var items = order.total_items + ' ' + (order.total_items == 1 ? 'item' : 'items');
+					  			var orderDate = new Date(order.order_created_at).toDateString();
+
+					  			customerOrdersHtml = customerOrdersHtml + '<div class="order">' +
+				      				'<a href="https://app.metorik.com/order/' + order.order_id + '" class="order-link" target="_blank">' +
+					      				'<div class="order-details clearfix">' +
+						      				'<div class="details">' +
+						      					'<div class="total">' +
+						      						'<span class="amount">' + self.moneyFormat(order.total, body.store.currency) + '</span> for <span class="items">' + items + '</span>' +
+					      						'</div>' +
+						      					'<div class="meta">' +
+						      						'<span class="order-number">' + order.order_number + '</span> - <span class="order-date">' + orderDate + '</span>' +
+					      						'</div>' +
+						      				'</div>' +
+						      				'<div class="status-wrapper">' +
+						      					'<div class="status">' + order.status + '</div>' +
+						      				'</div>' +
+					      				'</div>' +
+				      				'</a>' +
+				      			'</div>';
+					  		});
+
+					  		jQuery($container).find('.customer-orders .orders').prepend(customerOrdersHtml);
+
+					  		// customer products
+					  		var customerProductsHtml = '';
+					  		for (var key in body.products) {
+					  			if (! body.products.hasOwnProperty(key)) {
+					  				continue;
+					  			}
+					  			var product = body.products[key];
+
+								customerProductsHtml = customerProductsHtml + '<li class="product">' +
+									'<span>' + product.name + '</span> x ' + product.count +
+								'</li>';
+					  		}
+
+					  		jQuery($container).find('.customer-products .products').prepend(customerProductsHtml);
+					  	}
+
+					  	// guest
+					  	if (body.guest) {
+					  		// vars
+					  		var order = body.orders[0];
+					  		var joinDate = new Date(order.order_created_at).toDateString();
+					  		var phone = order.billing_address_phone;
+					  		var items = order.total_items + ' ' + (order.total_items == 1 ? 'item' : 'items');
+
+					  		// show
+					  		jQuery($container).find('.guest-data').show();
+
+					  		// customer details
+					  		jQuery($container).find('.customer-name').text(order.billing_address_first_name + " " + order.billing_address_last_name);
+					  		jQuery($container).find('.customer-image').attr('src', order.customerAvatar);
+					  		jQuery($container).find('.customer-join-date').text(joinDate);
+					  		if (body.location) {
+					  			jQuery($container).find('.customer-location').show().text(body.location);
+					  		}
+					  		if (phone) {
+					  			jQuery($container).find('.customer-phone').show().attr('href', 'tel:' + phone).text(phone);
+					  		}
+					  		
+					  		// order data
+					  		jQuery($container).find('.guest-orders').show();
+					  		jQuery($container).find('.guest-orders .order-link').attr('href', 'https://app.metorik.com/order/' + order.order_id);
+					  		jQuery($container).find('.guest-orders .amount').text(self.moneyFormat(order.total, body.store.currency));
+					  		jQuery($container).find('.guest-orders .items').text(items);
+					  		jQuery($container).find('.guest-orders .order-number').text(order.order_number);
+					  		jQuery($container).find('.guest-orders .order-date').text(joinDate);
+					  		jQuery($container).find('.guest-orders .status').text(order.status);
+					  		
+					  		// order items
+					  		var itemsHtml = '';
+					  		order.line_items.forEach(function(item) {
+					  			itemsHtml = itemsHtml + '<li>' + item.name + ' x ' + item.quantity + ' - ' + self.moneyFormat(item.total, body.store.currency) + '</li>';
+					  		});
+					  		jQuery($container).find('.guest-orders .order-items').show();
+					  		jQuery($container).find('.guest-orders .order-items ul').append(itemsHtml);
+					  	}
+
+					  	// extra styling just for contact page
+					  	if (page_type == 'contact') {
+					  		jQuery($container).find('.customer-details').addClass('contact-page');
+					  	}
+					}
+				})
+				.fail(function() {
+					// stop loading
+					jQuery($container).find('.loading').hide();
+
+					// handle failure
+					jQuery($container).find('.error').show();
+					jQuery($container).find('.error .reason').text('Please ensure you have provided a valid API token.');
+				});
+		},
+
+		moneyFormat: function(amount, currency, decimals) {
+			// decimals default
+			if (decimals === undefined) {
+				decimals = 2;
+			}
+
+			// number
+			amount = new Number(amount);
+
+			// format with decimals
+			var number = amount.toFixed(decimals).replace(/./g, function(c, i, a) {
+			    return i && c !== "." && (a.length - i) % 3 === 0 ? ',' + c : c;
+			});
+
+			// get symbol
+			var symbol = this.getCurrencySymbol(currency);
+
+			// put together and return
+			return symbol + number;
+		},
+
+		getCurrencySymbol: function(code) {
+			var symbols = {
+				"AED": "د.إ",
+				"AFN": "؋",
+				"ALL": "L",
+				"ANG": "ƒ",
+				"AOA": "Kz",
+				"ARS": "$",
+				"AUD": "$",
+				"AWG": "ƒ",
+				"AZN": "₼",
+				"BAM": "KM",
+				"BBD": "$",
+				"BDT": "৳",
+				"BGN": "лв",
+				"BHD": ".د.ب",
+				"BIF": "FBu",
+				"BMD": "$",
+				"BND": "$",
+				"BOB": "Bs.",
+				"BRL": "R$",
+				"BSD": "$",
+				"BTN": "Nu.",
+				"BWP": "P",
+				"BYR": "p.",
+				"BZD": "BZ$",
+				"CAD": "$",
+				"CDF": "FC",
+				"CHF": "Fr.",
+				"CLP": "$",
+				"CNY": "¥",
+				"COP": "$",
+				"CRC": "₡",
+				"CUC": "$",
+				"CUP": "₱",
+				"CVE": "$",
+				"CZK": "Kč",
+				"DJF": "Fdj",
+				"DKK": "kr",
+				"DOP": "RD$",
+				"DZD": "دج",
+				"EEK": "kr",
+				"EGP": "£",
+				"ERN": "Nfk",
+				"ETB": "Br",
+				"EUR": "€",
+				"FJD": "$",
+				"FKP": "£",
+				"GBP": "£",
+				"GEL": "₾",
+				"GGP": "£",
+				"GHC": "₵",
+				"GHS": "GH₵",
+				"GIP": "£",
+				"GMD": "D",
+				"GNF": "FG",
+				"GTQ": "Q",
+				"GYD": "$",
+				"HKD": "$",
+				"HNL": "L",
+				"HRK": "kn",
+				"HTG": "G",
+				"HUF": "Ft",
+				"IDR": "Rp",
+				"ILS": "₪",
+				"IMP": "£",
+				"INR": "₹",
+				"IQD": "ع.د",
+				"IRR": "﷼",
+				"ISK": "kr",
+				"JEP": "£",
+				"JMD": "J$",
+				"JPY": "¥",
+				"KES": "KSh",
+				"KGS": "лв",
+				"KHR": "៛",
+				"KMF": "CF",
+				"KPW": "₩",
+				"KRW": "₩",
+				"KYD": "$",
+				"KZT": "₸",
+				"LAK": "₭",
+				"LBP": "£",
+				"LKR": "₨",
+				"LRD": "$",
+				"LSL": "M",
+				"LTL": "Lt",
+				"LVL": "Ls",
+				"MAD": "MAD",
+				"MDL": "lei",
+				"MGA": "Ar",
+				"MKD": "ден",
+				"MMK": "K",
+				"MNT": "₮",
+				"MOP": "MOP$",
+				"MUR": "₨",
+				"MVR": "Rf",
+				"MWK": "MK",
+				"MXN": "$",
+				"MYR": "RM",
+				"MZN": "MT",
+				"NAD": "$",
+				"NGN": "₦",
+				"NIO": "C$",
+				"NOK": "kr",
+				"NPR": "₨",
+				"NZD": "$",
+				"OMR": "﷼",
+				"PAB": "B/.",
+				"PEN": "S/.",
+				"PGK": "K",
+				"PHP": "₱",
+				"PKR": "₨",
+				"PLN": "zł",
+				"PYG": "Gs",
+				"QAR": "﷼",
+				"RMB": "￥",
+				"RON": "lei",
+				"RSD": "Дин.",
+				"RUB": "₽",
+				"RWF": "R₣",
+				"SAR": "﷼",
+				"SBD": "$",
+				"SCR": "₨",
+				"SDG": "ج.س.",
+				"SEK": "kr",
+				"SGD": "$",
+				"SHP": "£",
+				"SLL": "Le",
+				"SOS": "S",
+				"SRD": "$",
+				"SSP": "£",
+				"STD": "Db",
+				"SVC": "$",
+				"SYP": "£",
+				"SZL": "E",
+				"THB": "฿",
+				"TJS": "SM",
+				"TMT": "T",
+				"TND": "د.ت",
+				"TOP": "T$",
+				"TRL": "₤",
+				"TRY": "₺",
+				"TTD": "TT$",
+				"TVD": "$",
+				"TWD": "NT$",
+				"TZS": "TSh",
+				"UAH": "₴",
+				"UGX": "USh",
+				"USD": "$",
+				"UYU": "$U",
+				"UZS": "лв",
+				"VEF": "Bs",
+				"VND": "₫",
+				"VUV": "VT",
+				"WST": "WS$",
+				"XAF": "FCFA",
+				"XBT": "Ƀ" ,
+				"XCD": "$",
+				"XOF": "CFA" ,
+				"XPF": "₣" ,
+				"YER": "﷼",
+				"ZAR": "R",
+				"ZWD": "Z$"
+			};
+
+			return symbols[code];
+		}
+	};
+})();Freshapp.exec({
+      'content' : {{app_id}},
+      'appName' : '{{app_id}}',
+      'features' : []
+    })
+    
+</script>

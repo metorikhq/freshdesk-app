@@ -9,9 +9,27 @@
 
 		  	// base url
 		  	var baseUrl = "https://app.metorik.com";
+		  	var email = "";
 
+		  	if (page_type == 'ticket') {
+		  		jQuery(document).on("sidebar_loaded", function(event, data) {
+		  			email = domHelper.ticket.getContactInfo().user.email;
+		  		});
+		  	} else {
+		  		try {
+			  		 if (domHelper.contact) {
+			  		 	email = domHelper.contact.getContactInfo().user.email
+			  		 }
+			  	}catch (d){
+			  		// console.log(d.description);
+			  	}
+		  	}
 		  	// email to request for (and urlencode)
-		  	var email = page_type == 'ticket' ? domHelper.ticket.getContactInfo().user.email : domHelper.contact.getContactInfo().user.email;
+		  	// var email = page_type == 'ticket' ? domHelper.ticket.getContactInfo().user.email : domHelper.contact.getContactInfo().user.email;
+		  	if (email == "") {
+		  		jQuery($container).find('.error').show();
+					jQuery($container).find('.error .reason').text("Error in fetching the email. Try reloading the page");
+		  	}
 		  	email = encodeURIComponent(email);
 
 		  	// get data
