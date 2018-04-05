@@ -1,353 +1,346 @@
-(function() {
-  "use strict";
-  	return {
-		initialize: function() {
-			var self = this;
+$(document).ready( function() {
+    app.initialized()
+        .then(function(_client) {
+            var client = _client;
+            client.events.on('app.activated',
+                function() {
+                    client.data.get('contact')
+                        .then(function(data) {
+                            var contact = data.contact;
+                            
+                            // timeout so app is active
+                            setTimeout(function() {
+                                new Vue({
+                                    el: '#app',
 
-			// container
-			var $container = this.$container;
+                                    data: {
+                                        apiUrl: 'https://app.metorik.com',
+                                        user: {},
+                                        loading: true,
+                                        error: false,
+                                        metorikError: false,
+                                        tokenError: false,
+                                        metorik: {
+                                            data: false
+                                        },
+                                        showAllItems: false
+                                    },
 
-		  	// base url
-		  	var baseUrl = "https://app.metorik.com";
+                                    mounted: function () {
+                                        this.user = contact;
+                                        this.getMetorikData();
+                                    },
 
-		  	// email to request for (and urlencode)
-		  	var email = page_type == 'ticket' ? domHelper.ticket.getContactInfo().user.email : domHelper.contact.getContactInfo().user.email;
-		  	email = encodeURIComponent(email);
+                                    methods: {
+                                        getMetorikData: function () {
+                                            var self = this;
+                                            var email = this.user.email;
 
-		  	// get data
-		  	this.$request.get(baseUrl + "/api/store/external/freshdesk?token={{iparam.api_token}}&email=" + email)
-				.done(function(data) {
-					// stop loading
-					jQuery($container).find('.loading').hide();
+                                            // get data from metorik
+                                            var url = self.apiUrl + '/api/store/external/freshdesk?token=<%= iparam.api_token %>&email=' + encodeURIComponent(email);
+                                            client.request.get(url)
+                                                .then(
+                                                    function (data) {
+                                                        var response = JSON.parse(data.response);
 
-					// handle data
-					var body = JSON.parse(data.response);
+                                                        self.loading = false;
+                                                        // handle response
+                                                        if (response.success) {
+                                                            self.metorik.data = response;
+                                                        } else {
+                                                            self.metorikError = response.reason;
+                                                        }
+                                                    },
+                                                    function () {
+                                                        self.error = true;
+                                                    }
+                                                );
+                                        },
 
-					// check for errors
-					if (! body.success) {
-						jQuery($container).find('.error').show();
-						jQuery($container).find('.error .reason').text(body.reason);
-					} else {
-					  	// customer or guest
-					  	jQuery($container).find('.customer-details').show();
+                                        dateFormat: function (date, format) {
+                                            var format = format || 'LL';
+                                            return moment(date).format(format);
+                                        },
 
-					  	// customer
-					  	if (body.customer) {
-					  		// vars
-					  		var joinDate = new Date(body.customer.customer_created_at).toDateString();
-					  		var phone = body.customer.billing_address_phone;
+                                        numberFormat: function (amount, precision) {
+                                            var precision = precision || 2;
+                                            return accounting.formatNumber(amount, precision);
+                                        },
 
-					  		// show
-					  		jQuery($container).find('.customer-url').show();
-					  		jQuery($container).find('.customer-stats').show();
-					  		jQuery($container).find('.customer-orders').show();
-					  		jQuery($container).find('.customer-products').show();
+                                        /**
+                                         * Number of decimals for a total items count. Handles possiblity
+                                         * that there are decimals, and if so, will give 2 Otherwise 0.
+                                         */
+                                        totalItemsDecimals: function (items) {
+                                            return items % 1 != 0 ? 2 : 0;
+                                        },
 
-					  		// customer details
-					  		jQuery($container).find('.customer-url').attr('href', 'https://app.metorik.com/customer/' + body.customer.customer_id);
-					  		jQuery($container).find('.customer-name').text(body.customer.fullName);
-					  		jQuery($container).find('.customer-image').attr('src', body.customer.avatar);
-					  		jQuery($container).find('.customer-join-date').text(joinDate);
-					  		if (body.customer.location && body.customer.location != ', ') {
-						  		jQuery($container).find('.customer-location').show().text(body.customer.location);
-						  	}
-					  		jQuery($container).find('.customer-phone').show().attr('href', 'tel:' + phone).text(phone);
-					  	
-					  		// customer stats
-					  		jQuery($container).find('.customer-stats .orders .amount').text(body.totals.orders_count);
-					  		jQuery($container).find('.customer-stats .orders .words').text(body.totals.orders_count == 1 ? 'Order' : 'Orders');
-					  		jQuery($container).find('.customer-stats .items .amount').text(body.totals.items_count);
-					  		jQuery($container).find('.customer-stats .items .words').text(body.totals.items_count == 1 ? 'Item' : 'Items');
-					  		jQuery($container).find('.customer-stats .aov .amount').text(self.moneyFormat(body.totals.average_order, body.store.currency, 0));
-					  		jQuery($container).find('.customer-stats .ltv .amount').text(self.moneyFormat(body.totals.total, body.store.currency, 0));
-					  	
-					  		// customer orders
-					  		var customerOrdersHtml = '';
-					  		body.orders.forEach(function(order) {
-					  			var items = order.total_items + ' ' + (order.total_items == 1 ? 'item' : 'items');
-					  			var orderDate = new Date(order.order_created_at).toDateString();
+                                        moneyFormat: function (amount, precision) {
+                                            var precision = precision || 2;
+                                            
+                                            // use current store's current
+                                            currency = this.metorik.data.store.currency;
 
-					  			customerOrdersHtml = customerOrdersHtml + '<div class="order">' +
-				      				'<a href="https://app.metorik.com/order/' + order.order_id + '" class="order-link" target="_blank">' +
-					      				'<div class="order-details clearfix">' +
-						      				'<div class="details">' +
-						      					'<div class="total">' +
-						      						'<span class="amount">' + self.moneyFormat(order.total, body.store.currency) + '</span> for <span class="items">' + items + '</span>' +
-					      						'</div>' +
-						      					'<div class="meta">' +
-						      						'<span class="order-number">' + order.order_number + '</span> - <span class="order-date">' + orderDate + '</span>' +
-					      						'</div>' +
-						      				'</div>' +
-						      				'<div class="status-wrapper">' +
-						      					'<div class="status">' + order.status + '</div>' +
-						      				'</div>' +
-					      				'</div>' +
-				      				'</a>' +
-				      			'</div>';
-					  		});
+                                            // get symbol for given currency code
+                                            var symbol = this.getCurrencySymbol(currency);
 
-					  		jQuery($container).find('.customer-orders .orders').prepend(customerOrdersHtml);
+                                            // format with accounting js and return
+                                            // note - if invalid symbol/currency, uses $
+                                            return accounting.formatMoney(amount, symbol, precision);
+                                        },
 
-					  		// customer products
-					  		var customerProductsHtml = '';
-					  		for (var key in body.products) {
-					  			if (! body.products.hasOwnProperty(key)) {
-					  				continue;
-					  			}
-					  			var product = body.products[key];
+                                        pluralWord: function (count, single, plural) {
+                                            var single = single || 'item';
+                                            var plural = plural || 'items';
 
-								customerProductsHtml = customerProductsHtml + '<li class="product">' +
-									'<span>' + product.name + '</span> x ' + product.count +
-								'</li>';
-					  		}
+                                            if (count == 1) {
+                                                return single;
+                                            }
 
-					  		jQuery($container).find('.customer-products .products').prepend(customerProductsHtml);
-					  	}
+                                            return plural;
+                                        },
 
-					  	// guest
-					  	if (body.guest) {
-					  		// vars
-					  		var order = body.orders[0];
-					  		var joinDate = new Date(order.order_created_at).toDateString();
-					  		var phone = order.billing_address_phone;
-					  		var items = order.total_items + ' ' + (order.total_items == 1 ? 'item' : 'items');
+                                        subscriptionPeriod: function(subscription) {
+                                            var period = subscription.billing_interval == 1 ? subscription.billing_period : this.ordinal(subscription.billing_interval) + ' ' + subscription.billing_period;
+                                            var amount = this.moneyFormat(subscription.order.total, 2) + ' / ' + period;
+                                            return amount;
+                                        },
 
-					  		// show
-					  		jQuery($container).find('.guest-data').show();
+                                        /**
+                                         * Ordinal of a number.
+                                         * @param n
+                                         * @returns {string}
+                                         */
+                                        ordinal: function (n) {
+                                            var s = ["th", "st", "nd", "rd"],
+                                                v = n % 100;
+                                            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+                                        },
 
-					  		// customer details
-					  		jQuery($container).find('.customer-name').text(order.billing_address_first_name + " " + order.billing_address_last_name);
-					  		jQuery($container).find('.customer-image').attr('src', order.customerAvatar);
-					  		jQuery($container).find('.customer-join-date').text(joinDate);
-					  		if (body.location) {
-					  			jQuery($container).find('.customer-location').show().text(body.location);
-					  		}
-					  		if (phone) {
-					  			jQuery($container).find('.customer-phone').show().attr('href', 'tel:' + phone).text(phone);
-					  		}
-					  		
-					  		// order data
-					  		jQuery($container).find('.guest-orders').show();
-					  		jQuery($container).find('.guest-orders .order-link').attr('href', 'https://app.metorik.com/order/' + order.order_id);
-					  		jQuery($container).find('.guest-orders .amount').text(self.moneyFormat(order.total, body.store.currency));
-					  		jQuery($container).find('.guest-orders .items').text(items);
-					  		jQuery($container).find('.guest-orders .order-number').text(order.order_number);
-					  		jQuery($container).find('.guest-orders .order-date').text(joinDate);
-					  		jQuery($container).find('.guest-orders .status').text(order.status);
-					  		
-					  		// order items
-					  		var itemsHtml = '';
-					  		order.line_items.forEach(function(item) {
-					  			itemsHtml = itemsHtml + '<li>' + item.name + ' x ' + item.quantity + ' - ' + self.moneyFormat(item.total, body.store.currency) + '</li>';
-					  		});
-					  		jQuery($container).find('.guest-orders .order-items').show();
-					  		jQuery($container).find('.guest-orders .order-items ul').append(itemsHtml);
-					  	}
+                                        statusAttribute: function (status) {
+                                            var color;
+                                            var icon;
 
-					  	// extra styling just for contact page
-					  	if (page_type == 'contact') {
-					  		jQuery($container).find('.customer-details').addClass('contact-page');
-					  	}
-					}
-				})
-				.fail(function() {
-					// stop loading
-					jQuery($container).find('.loading').hide();
+                                            switch (status) {
+                                                case 'completed':
+                                                    color = '#27AE60'; // green
+                                                    icon = 'fa-check';
+                                                    break;
+                                                case 'active':
+                                                    color = '#27AE60'; // green
+                                                    icon = 'fa-calendar-check-o';
+                                                    break;
+                                                case 'processing':
+                                                    color = '#FECF39'; // yellow
+                                                    icon = 'fa-ellipsis-h';
+                                                    break;
+                                                case 'pending':
+                                                    color = '#ff7418'; // lighter orange
+                                                    icon = 'fa-clock-o';
+                                                    break;
+                                                case 'on-hold':
+                                                    color = '#D35400'; // orange
+                                                    icon = 'fa-pause-circle';
+                                                    break;
+                                                case 'cancelled':
+                                                    color = '#C0392B'; // darker red
+                                                    icon = 'fa-ban';
+                                                    break;
+                                                case 'refunded':
+                                                    color = '#E74C3C'; // red
+                                                    icon = 'fa-refresh';
+                                                    break;
+                                                case 'failed':
+                                                    color = '#222C3C'; // dark blue
+                                                    icon = 'fa-exclamation';
+                                                    break;
+                                                default:
+                                                    color = '#222'; // black
+                                                    icon = 'fa-circle';
+                                                    break;
+                                            }
 
-					// handle failure
-					jQuery($container).find('.error').show();
-					jQuery($container).find('.error .reason').text('Please ensure you have provided a valid API token.');
-				});
-		},
+                                            return {
+                                                color: color,
+                                                icon: icon
+                                            };
+                                        },
 
-		moneyFormat: function(amount, currency, decimals) {
-			// decimals default
-			if (decimals === undefined) {
-				decimals = 2;
-			}
+                                        getCurrencySymbol: function (code) {
+                                            var symbols = {
+                                                "AED": "د.إ",
+                                                "AFN": "؋",
+                                                "ALL": "L",
+                                                "ANG": "ƒ",
+                                                "AOA": "Kz",
+                                                "ARS": "$",
+                                                "AUD": "$",
+                                                "AWG": "ƒ",
+                                                "AZN": "₼",
+                                                "BAM": "KM",
+                                                "BBD": "$",
+                                                "BDT": "৳",
+                                                "BGN": "лв",
+                                                "BHD": ".د.ب",
+                                                "BIF": "FBu",
+                                                "BMD": "$",
+                                                "BND": "$",
+                                                "BOB": "Bs.",
+                                                "BRL": "R$",
+                                                "BSD": "$",
+                                                "BTN": "Nu.",
+                                                "BWP": "P",
+                                                "BYR": "p.",
+                                                "BZD": "BZ$",
+                                                "CAD": "$",
+                                                "CDF": "FC",
+                                                "CHF": "Fr.",
+                                                "CLP": "$",
+                                                "CNY": "¥",
+                                                "COP": "$",
+                                                "CRC": "₡",
+                                                "CUC": "$",
+                                                "CUP": "₱",
+                                                "CVE": "$",
+                                                "CZK": "Kč",
+                                                "DJF": "Fdj",
+                                                "DKK": "kr",
+                                                "DOP": "RD$",
+                                                "DZD": "دج",
+                                                "EEK": "kr",
+                                                "EGP": "£",
+                                                "ERN": "Nfk",
+                                                "ETB": "Br",
+                                                "EUR": "€",
+                                                "FJD": "$",
+                                                "FKP": "£",
+                                                "GBP": "£",
+                                                "GEL": "₾",
+                                                "GGP": "£",
+                                                "GHC": "₵",
+                                                "GHS": "GH₵",
+                                                "GIP": "£",
+                                                "GMD": "D",
+                                                "GNF": "FG",
+                                                "GTQ": "Q",
+                                                "GYD": "$",
+                                                "HKD": "$",
+                                                "HNL": "L",
+                                                "HRK": "kn",
+                                                "HTG": "G",
+                                                "HUF": "Ft",
+                                                "IDR": "Rp",
+                                                "ILS": "₪",
+                                                "IMP": "£",
+                                                "INR": "₹",
+                                                "IQD": "ع.د",
+                                                "IRR": "﷼",
+                                                "ISK": "kr",
+                                                "JEP": "£",
+                                                "JMD": "J$",
+                                                "JPY": "¥",
+                                                "KES": "KSh",
+                                                "KGS": "лв",
+                                                "KHR": "៛",
+                                                "KMF": "CF",
+                                                "KPW": "₩",
+                                                "KRW": "₩",
+                                                "KYD": "$",
+                                                "KZT": "₸",
+                                                "LAK": "₭",
+                                                "LBP": "£",
+                                                "LKR": "₨",
+                                                "LRD": "$",
+                                                "LSL": "M",
+                                                "LTL": "Lt",
+                                                "LVL": "Ls",
+                                                "MAD": "MAD",
+                                                "MDL": "lei",
+                                                "MGA": "Ar",
+                                                "MKD": "ден",
+                                                "MMK": "K",
+                                                "MNT": "₮",
+                                                "MOP": "MOP$",
+                                                "MUR": "₨",
+                                                "MVR": "Rf",
+                                                "MWK": "MK",
+                                                "MXN": "$",
+                                                "MYR": "RM",
+                                                "MZN": "MT",
+                                                "NAD": "$",
+                                                "NGN": "₦",
+                                                "NIO": "C$",
+                                                "NOK": "kr",
+                                                "NPR": "₨",
+                                                "NZD": "$",
+                                                "OMR": "﷼",
+                                                "PAB": "B/.",
+                                                "PEN": "S/.",
+                                                "PGK": "K",
+                                                "PHP": "₱",
+                                                "PKR": "₨",
+                                                "PLN": "zł",
+                                                "PYG": "Gs",
+                                                "QAR": "﷼",
+                                                "RMB": "￥",
+                                                "RON": "lei",
+                                                "RSD": "Дин.",
+                                                "RUB": "₽",
+                                                "RWF": "R₣",
+                                                "SAR": "﷼",
+                                                "SBD": "$",
+                                                "SCR": "₨",
+                                                "SDG": "ج.س.",
+                                                "SEK": "kr",
+                                                "SGD": "$",
+                                                "SHP": "£",
+                                                "SLL": "Le",
+                                                "SOS": "S",
+                                                "SRD": "$",
+                                                "SSP": "£",
+                                                "STD": "Db",
+                                                "SVC": "$",
+                                                "SYP": "£",
+                                                "SZL": "E",
+                                                "THB": "฿",
+                                                "TJS": "SM",
+                                                "TMT": "T",
+                                                "TND": "د.ت",
+                                                "TOP": "T$",
+                                                "TRL": "₤",
+                                                "TRY": "₺",
+                                                "TTD": "TT$",
+                                                "TVD": "$",
+                                                "TWD": "NT$",
+                                                "TZS": "TSh",
+                                                "UAH": "₴",
+                                                "UGX": "USh",
+                                                "USD": "$",
+                                                "UYU": "$U",
+                                                "UZS": "лв",
+                                                "VEF": "Bs",
+                                                "VND": "₫",
+                                                "VUV": "VT",
+                                                "WST": "WS$",
+                                                "XAF": "FCFA",
+                                                "XBT": "Ƀ",
+                                                "XCD": "$",
+                                                "XOF": "CFA",
+                                                "XPF": "₣",
+                                                "YER": "﷼",
+                                                "ZAR": "R",
+                                                "ZWD": "Z$"
+                                            };
 
-			// number
-			amount = new Number(amount);
-
-			// format with decimals
-			var number = amount.toFixed(decimals).replace(/./g, function(c, i, a) {
-			    return i && c !== "." && (a.length - i) % 3 === 0 ? ',' + c : c;
-			});
-
-			// get symbol
-			var symbol = this.getCurrencySymbol(currency);
-
-			// put together and return
-			return symbol + number;
-		},
-
-		getCurrencySymbol: function(code) {
-			var symbols = {
-				"AED": "د.إ",
-				"AFN": "؋",
-				"ALL": "L",
-				"ANG": "ƒ",
-				"AOA": "Kz",
-				"ARS": "$",
-				"AUD": "$",
-				"AWG": "ƒ",
-				"AZN": "₼",
-				"BAM": "KM",
-				"BBD": "$",
-				"BDT": "৳",
-				"BGN": "лв",
-				"BHD": ".د.ب",
-				"BIF": "FBu",
-				"BMD": "$",
-				"BND": "$",
-				"BOB": "Bs.",
-				"BRL": "R$",
-				"BSD": "$",
-				"BTN": "Nu.",
-				"BWP": "P",
-				"BYR": "p.",
-				"BZD": "BZ$",
-				"CAD": "$",
-				"CDF": "FC",
-				"CHF": "Fr.",
-				"CLP": "$",
-				"CNY": "¥",
-				"COP": "$",
-				"CRC": "₡",
-				"CUC": "$",
-				"CUP": "₱",
-				"CVE": "$",
-				"CZK": "Kč",
-				"DJF": "Fdj",
-				"DKK": "kr",
-				"DOP": "RD$",
-				"DZD": "دج",
-				"EEK": "kr",
-				"EGP": "£",
-				"ERN": "Nfk",
-				"ETB": "Br",
-				"EUR": "€",
-				"FJD": "$",
-				"FKP": "£",
-				"GBP": "£",
-				"GEL": "₾",
-				"GGP": "£",
-				"GHC": "₵",
-				"GHS": "GH₵",
-				"GIP": "£",
-				"GMD": "D",
-				"GNF": "FG",
-				"GTQ": "Q",
-				"GYD": "$",
-				"HKD": "$",
-				"HNL": "L",
-				"HRK": "kn",
-				"HTG": "G",
-				"HUF": "Ft",
-				"IDR": "Rp",
-				"ILS": "₪",
-				"IMP": "£",
-				"INR": "₹",
-				"IQD": "ع.د",
-				"IRR": "﷼",
-				"ISK": "kr",
-				"JEP": "£",
-				"JMD": "J$",
-				"JPY": "¥",
-				"KES": "KSh",
-				"KGS": "лв",
-				"KHR": "៛",
-				"KMF": "CF",
-				"KPW": "₩",
-				"KRW": "₩",
-				"KYD": "$",
-				"KZT": "₸",
-				"LAK": "₭",
-				"LBP": "£",
-				"LKR": "₨",
-				"LRD": "$",
-				"LSL": "M",
-				"LTL": "Lt",
-				"LVL": "Ls",
-				"MAD": "MAD",
-				"MDL": "lei",
-				"MGA": "Ar",
-				"MKD": "ден",
-				"MMK": "K",
-				"MNT": "₮",
-				"MOP": "MOP$",
-				"MUR": "₨",
-				"MVR": "Rf",
-				"MWK": "MK",
-				"MXN": "$",
-				"MYR": "RM",
-				"MZN": "MT",
-				"NAD": "$",
-				"NGN": "₦",
-				"NIO": "C$",
-				"NOK": "kr",
-				"NPR": "₨",
-				"NZD": "$",
-				"OMR": "﷼",
-				"PAB": "B/.",
-				"PEN": "S/.",
-				"PGK": "K",
-				"PHP": "₱",
-				"PKR": "₨",
-				"PLN": "zł",
-				"PYG": "Gs",
-				"QAR": "﷼",
-				"RMB": "￥",
-				"RON": "lei",
-				"RSD": "Дин.",
-				"RUB": "₽",
-				"RWF": "R₣",
-				"SAR": "﷼",
-				"SBD": "$",
-				"SCR": "₨",
-				"SDG": "ج.س.",
-				"SEK": "kr",
-				"SGD": "$",
-				"SHP": "£",
-				"SLL": "Le",
-				"SOS": "S",
-				"SRD": "$",
-				"SSP": "£",
-				"STD": "Db",
-				"SVC": "$",
-				"SYP": "£",
-				"SZL": "E",
-				"THB": "฿",
-				"TJS": "SM",
-				"TMT": "T",
-				"TND": "د.ت",
-				"TOP": "T$",
-				"TRL": "₤",
-				"TRY": "₺",
-				"TTD": "TT$",
-				"TVD": "$",
-				"TWD": "NT$",
-				"TZS": "TSh",
-				"UAH": "₴",
-				"UGX": "USh",
-				"USD": "$",
-				"UYU": "$U",
-				"UZS": "лв",
-				"VEF": "Bs",
-				"VND": "₫",
-				"VUV": "VT",
-				"WST": "WS$",
-				"XAF": "FCFA",
-				"XBT": "Ƀ" ,
-				"XCD": "$",
-				"XOF": "CFA" ,
-				"XPF": "₣" ,
-				"YER": "﷼",
-				"ZAR": "R",
-				"ZWD": "Z$"
-			};
-
-			return symbols[code];
-		}
-	};
-})();
+                                            return symbols[code];
+                                        }
+                                    },
+                                });
+                            }, 750);
+                        })
+                        .catch(function(e) {
+                            console.log('Exception - ', e);
+                        });
+        });
+    });
+});

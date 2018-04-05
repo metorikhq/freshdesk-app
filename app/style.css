@@ -1,0 +1,441 @@
+body {
+  border: 1px solid #d3e0e9;
+  border-radius: 3px;
+  color: #68768c;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  padding: 5px 12px;
+}
+
+#app[v-cloak] {
+	display: none;
+}
+
+#app .metorik-error {
+	border: 1px solid #d3e0e9;
+	border-radius: 2px;
+	padding: 14px 0;
+	text-align: center;
+}
+#app .metorik-error .try-search {
+	padding-top: 8px;
+}
+
+#app .metorik-content {
+	padding: 8px 5px;
+}
+#app .metorik-content h4 {
+	font-size: 16px;
+	font-weight: 400;
+	margin-bottom: 14px;
+}
+
+#app .metorik-content .profile {
+	margin-bottom: 15px;
+}
+#app .metorik-content .profile .details {
+	float: left;
+	padding-top: 8px;
+}
+#app .metorik-content .profile .details .name {
+	display: block;
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+#app .metorik-content .profile .details ul.fa-ul {
+	margin-left: 20px;
+}
+#app .metorik-content .profile .details .meta {
+	font-size: 13px;
+	padding-bottom: 2px;
+}
+#app .metorik-content .profile .details .meta i {
+	font-size: 12px;
+  padding-top: 1px;
+}
+
+#app .metorik-content .stats {
+	color: #7f8fa4;
+}
+#app .metorik-content .stats .stat {
+	display: inline-block;
+	font-size: 12px;
+	margin-bottom: 15px;
+	text-transform: uppercase;
+	width: 41%;
+}
+#app .metorik-content .stats .stat:nth-child(even) {
+	float: right;
+}
+#app .metorik-content .stats .stat .amount {
+	color: #68768c;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 500;
+	padding-right: 3px;
+    vertical-align: middle;
+}
+#app .metorik-content .stats .stat .words {
+    display: block;
+    padding-top: 1px;
+	vertical-align: middle;
+}
+
+#app .metorik-content .orders {
+	list-style-type: none;
+	margin-left: 0;
+}
+#app .metorik-content .orders .order a {
+	border: 1px solid #d3e0e9;
+	border-radius: 2px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	color: #68768c;
+	display: block;
+	margin-bottom: 0;
+	text-decoration: none;
+	width: 100%;
+    -webkit-transition: all 200ms;
+    transition: all 200ms;
+}
+#app .metorik-content .orders .order a:hover {
+	border-color: #a5c0d3;
+}
+#app .metorik-content .orders .order .details {
+	padding: 12px;
+}
+#app .metorik-content .orders .order .details .total {
+	color: #7f8fa4;
+	font-size: 13px;
+	margin-bottom: 4px;
+}
+#app .metorik-content .orders .order .details .total span {
+	font-weight: 600;
+}
+#app .metorik-content .orders .order .meta {
+	color: #97a1b2;
+	font-size: 12px;
+}
+#app .metorik-content .orders .order .status {
+  font-size: 14px;
+  padding-left: 4px;
+}
+
+#app .metorik-content .products {
+	list-style-type: none;
+	margin-left: 0;
+}
+#app .metorik-content .products .product {
+	border: 1px solid #d3e0e9;
+  color: #7f8fa4;
+  font-size: 13px;
+	margin-bottom: 4px;
+	padding: 12px;
+}
+#app .metorik-content .products .product span {
+	font-weight: 600;
+}
+#app .metorik-content .products .product span.sku {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+/* order items */
+#app .metorik-content .order-items {
+	border: 1px solid #d3e0e9;
+	border-top: 0;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	margin-bottom: 10px;
+	width: 100%;
+}
+#app .metorik-content .order-items ul {
+	list-style-type: none;
+	margin: 0;
+}
+#app .metorik-content .order-items ul .order-item {
+	background: #fafafa;
+	border-bottom: 1px solid #d3e0e9;
+	font-size: 12px;
+	padding: 8px 12px;
+}
+#app .metorik-content .order-items ul .order-item.show-all {
+	cursor: pointer;
+	font-style: italic;
+}
+#app .metorik-content .order-items ul .order-item.show-all:hover {
+	background: #f5f5f5;
+}
+#app .metorik-content .order-items ul .order-item:last-of-type {
+	border-bottom: 0;
+}
+#app .metorik-content .order-items ul .order-item .sku {
+	font-size: 12px;
+	opacity: 0.8;
+}
+
+/* Loading */
+.loading-pulse {
+	display: block;
+	margin: 20px auto 0;
+	position: relative;
+	width: 6px;
+	height: 24px;
+	background: rgba(255, 255, 255, 0.2);
+	-webkit-animation: pulse 750ms infinite;
+	animation: pulse 750ms infinite;
+	-webkit-animation-delay: 250ms;
+	animation-delay: 250ms;
+}
+.loading-pulse:before, .loading-pulse:after {
+	content: '';
+	position: absolute;
+	display: block;
+	height: 16px;
+	width: 6px;
+	background: rgba(255, 255, 255, 0.2);
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	-webkit-animation: pulse 750ms infinite;
+	animation: pulse 750ms infinite;
+}
+.loading-pulse:before {
+	left: -12px;
+}
+.loading-pulse:after {
+	left: 12px;
+	-webkit-animation-delay: 500ms;
+	animation-delay: 500ms;
+}
+@-webkit-keyframes pulse {
+	50% {
+		background: #7f8fa4;
+	}
+}
+@keyframes pulse {
+	50% {
+		background: #7f8fa4;
+	}
+}
+
+/* Helpers */
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/**
+ * Tooltip Styles
+ */
+
+/* Base styles for the element that has a tooltip */
+[data-tooltip],
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Base styles for the entire tooltip */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after {
+  position: absolute;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: 
+      opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    -moz-transition:    
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    transition:         
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform:    translate3d(0, 0, 0);
+  transform:         translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+/* Show the entire tooltip on hover and focus */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* Base styles for the tooltip's directional arrow */
+.tooltip:before,
+[data-tooltip]:before {
+  z-index: 1001;
+  border: 6px solid transparent;
+  background: transparent;
+  content: "";
+}
+
+/* Base styles for the tooltip's content area */
+.tooltip:after,
+[data-tooltip]:after {
+  z-index: 1000;
+  padding: 9px 14px 9px 12px;
+  min-width: 100px;
+  width: auto;
+  background-color: #000;
+  background-color: hsla(0, 0%, 20%, 0.9);
+  border-radius: 2px;
+  text-transform: capitalize;
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+/* Directions */
+
+/* Top (default) */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after,
+.tooltip-top:before,
+.tooltip-top:after {
+  bottom: 100%;
+  left: 50%;
+}
+
+[data-tooltip]:before,
+.tooltip:before,
+.tooltip-top:before {
+  margin-left: -6px;
+  margin-bottom: -12px;
+  border-top-color: #000;
+  border-top-color: hsla(0, 0%, 20%, 0.9);
+}
+
+/* Horizontally align top/bottom tooltips */
+[data-tooltip]:after,
+.tooltip:after,
+.tooltip-top:after {
+  margin-left: -80px;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after,
+.tooltip-top:hover:before,
+.tooltip-top:hover:after,
+.tooltip-top:focus:before,
+.tooltip-top:focus:after {
+  -webkit-transform: translateY(-12px);
+  -moz-transform:    translateY(-12px);
+  transform:         translateY(-12px); 
+}
+
+/* Left */
+.tooltip-left:before,
+.tooltip-left:after {
+  right: 100%;
+  bottom: 50%;
+  left: auto;
+}
+
+.tooltip-left:before {
+  margin-left: 0;
+  margin-right: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-left-color: #000;
+  border-left-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-left:hover:before,
+.tooltip-left:hover:after,
+.tooltip-left:focus:before,
+.tooltip-left:focus:after {
+  -webkit-transform: translateX(-12px);
+  -moz-transform:    translateX(-12px);
+  transform:         translateX(-12px); 
+}
+
+/* Bottom */
+.tooltip-bottom:before,
+.tooltip-bottom:after {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+}
+
+.tooltip-bottom:before {
+  margin-top: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-bottom-color: #000;
+  border-bottom-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-bottom:hover:before,
+.tooltip-bottom:hover:after,
+.tooltip-bottom:focus:before,
+.tooltip-bottom:focus:after {
+  -webkit-transform: translateY(12px);
+  -moz-transform:    translateY(12px);
+  transform:         translateY(12px); 
+}
+
+/* Right */
+.tooltip-right:before,
+.tooltip-right:after {
+  bottom: 50%;
+  left: 100%;
+}
+
+.tooltip-right:before {
+  margin-bottom: 0;
+  margin-left: -12px;
+  border-top-color: transparent;
+  border-right-color: #000;
+  border-right-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-right:hover:before,
+.tooltip-right:hover:after,
+.tooltip-right:focus:before,
+.tooltip-right:focus:after {
+  -webkit-transform: translateX(12px);
+  -moz-transform:    translateX(12px);
+  transform:         translateX(12px); 
+}
+
+/* Move directional arrows down a bit for left/right tooltips */
+.tooltip-left:before,
+.tooltip-right:before {
+  top: 3px;
+}
+
+/* Vertically center tooltip content for left/right tooltips */
+.tooltip-left:after,
+.tooltip-right:after {
+  margin-left: 0;
+  margin-bottom: -16px;
+}
