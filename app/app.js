@@ -36,25 +36,46 @@ $(document).ready( function() {
                                             var self = this;
                                             var email = this.user.email;
 
-                                            // get data from metorik
-                                            var url = self.apiUrl + '/api/store/external/freshdesk?token=<%= iparam.api_token %>&email=' + encodeURIComponent(email);
-                                            client.request.get(url)
-                                                .then(
-                                                    function (data) {
-                                                        var response = JSON.parse(data.response);
+                                            client.iparams.get('api_token').then(
+                                                function (data) {
+                                                    if (data.api_token) {
 
-                                                        self.loading = false;
-                                                        // handle response
-                                                        if (response.success) {
-                                                            self.metorik.data = response;
-                                                        } else {
-                                                            self.metorikError = response.reason;
-                                                        }
-                                                    },
-                                                    function () {
+                                                        // get data from metorik
+                                                        var url = self.apiUrl + '/api/store/external/freshdesk?token=' + data.api_token + '&email=' + encodeURIComponent(email);
+                                                        client.request.get(url, {})
+                                                            .then(
+                                                                function (requestData) {
+                                                                    var response = JSON.parse(requestData.response);
+
+                                                                    self.loading = false;
+                                                                    // handle response
+                                                                    if (response.success) {
+                                                                        self.metorik.data = response;
+
+                                                                        client.instance.resize({ height: "500px" });
+                                                                    } else {
+                                                                        self.metorikError = response.reason;
+                                                                    }
+                                                                },
+                                                                function (err) {
+                                                                    self.loading = false;
+
+                                                                    if (JSON.parse(err.response).reason) {
+                                                                        self.metorikError = JSON.parse(err.response).reason;
+                                                                    } else {
+                                                                        self.error = true;
+                                                                    }
+                                                                }
+                                                            );
+                                                    } else {
                                                         self.error = true;
                                                     }
-                                                );
+                                                },
+                                                function (error) {
+                                                    self.error = true;
+                                                }
+                                            );
+
                                         },
 
                                         dateFormat: function (date, format) {
