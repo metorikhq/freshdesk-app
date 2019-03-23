@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
     <title>logo-icon</title>
     <desc>Created with Sketch.</desc>
     <defs>
@@ -12,14 +12,14 @@
     <g id="logo-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Icon:-Rounded-Square-#1">
             <g id="logo-attempt-1">
-                <rect id="Rectangle" stroke-opacity="0.15" stroke="#0A2282" stroke-width="5" fill="url(#linearGradient-1)" x="2.5" y="2.5" width="495" height="495" rx="100"></rect>
-                <g id="logo-6-smaller-gap" transform="translate(71.000000, 71.000000)" fill="#FFFFFF">
-                    <path d="M25,238.628125 L119.371875,238.628125 L119.371875,358 L25,358 C11.1928813,358 -1.8618293e-15,346.807119 -3.55271368e-15,333 L-3.55271368e-15,263.628125 C-5.24359806e-15,249.821006 11.1928813,238.628125 25,238.628125 Z" id="Rectangle" opacity="0.5"></path>
-                    <rect id="Rectangle" opacity="0.6" x="119.371875" y="238.628125" width="119.371875" height="119.371875"></rect>
-                    <path d="M238.628125,238.628125 L358,238.628125 L358,333 C358,346.807119 346.807119,358 333,358 L238.628125,358 L238.628125,238.628125 Z" id="Rectangle" opacity="0.8"></path>
-                    <path d="M144.371875,119.371875 L238.74375,119.371875 L238.74375,238.74375 L119.371875,238.74375 L119.371875,144.371875 C119.371875,130.564756 130.564756,119.371875 144.371875,119.371875 Z" id="Rectangle" opacity="0.7"></path>
-                    <rect id="Rectangle" opacity="0.9" x="238.628125" y="119.371875" width="119.371875" height="119.371875"></rect>
-                    <path d="M263.628125,0 L333,-3.55271368e-15 C346.807119,-1.83522252e-14 358,11.1928813 358,25 L358,119.371875 L238.628125,119.371875 L238.628125,25 C238.628125,11.1928813 249.821006,-1.01638711e-15 263.628125,-3.55271368e-15 Z" id="Rectangle"></path>
+                <rect id="Rectangle" stroke-opacity="0.15" stroke="#0A2282" stroke-width="0.64" fill="url(#linearGradient-1)" x="0.32" y="0.32" width="63.36" height="63.36" rx="12.8"></rect>
+                <g id="logo-6-smaller-gap" transform="translate(9.088000, 9.088000)" fill="#FFFFFF">
+                    <path d="M3.2,30.5444 L15.2796,30.5444 L15.2796,45.824 L3.2,45.824 C1.4326888,45.824 6.6052241e-16,44.3913112 4.4408921e-16,42.624 L0,33.7444 C-2.164332e-16,31.9770888 1.4326888,30.5444 3.2,30.5444 Z" id="Rectangle" opacity="0.5"></path>
+                    <rect id="Rectangle" opacity="0.6" x="15.2796" y="30.5444" width="15.2796" height="15.2796"></rect>
+                    <path d="M30.5444,30.5444 L45.824,30.5444 L45.824,42.624 C45.824,44.3913112 44.3913112,45.824 42.624,45.824 L30.5444,45.824 L30.5444,30.5444 Z" id="Rectangle" opacity="0.8"></path>
+                    <path d="M18.4796,15.2796 L30.5592,15.2796 L30.5592,30.5592 L15.2796,30.5592 L15.2796,18.4796 C15.2796,16.7122888 16.7122888,15.2796 18.4796,15.2796 Z" id="Rectangle" opacity="0.7"></path>
+                    <rect id="Rectangle" opacity="0.9" x="30.5444" y="15.2796" width="15.2796" height="15.2796"></rect>
+                    <path d="M33.7444,0 L42.624,0 C44.3913112,-3.24649801e-16 45.824,1.4326888 45.824,3.2 L45.824,15.2796 L30.5444,15.2796 L30.5444,3.2 C30.5444,1.4326888 31.9770888,7.6873901e-16 33.7444,4.4408921e-16 Z" id="Rectangle"></path>
                 </g>
             </g>
         </g>
