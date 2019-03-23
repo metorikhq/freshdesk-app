@@ -71,7 +71,7 @@ $(document).ready( function() {
                                                         self.error = true;
                                                     }
                                                 },
-                                                function (error) {
+                                                function () {
                                                     self.error = true;
                                                 }
                                             );

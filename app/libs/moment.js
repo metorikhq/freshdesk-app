@@ -2239,7 +2239,7 @@
     }
 
     // constant that refers to the ISO standard
-    hooks.ISO_8601 = function () {};
+    hooks.ISO_8601 = function () { /* empty */ };
 
     // date from string and format string
     function configFromStringAndFormat(config) {
@@ -2673,7 +2673,7 @@
 
     // This function will be called whenever a moment is mutated.
     // It is intended to keep the offset in sync with the timezone.
-    hooks.updateOffset = function () {};
+    hooks.updateOffset = function () { /* empty */ };
 
     // MOMENTS
 
