@@ -1,5 +1,5 @@
 {
-  "platform-version": "2.0",
+  "platform-version": "2.2",
   "product": {
     "freshdesk": {
       "location": {
@@ -16,5 +16,9 @@
   },
   "whitelisted-domains": [
     "https://app.metorik.com"
-  ]
+  ],
+  "engines": {
+    "node": "12.22.10",
+    "fdk": "7.3.0"
+  }
 }
